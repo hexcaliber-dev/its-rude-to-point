@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 1323738921826948608}
   m_Layer: 0
   m_Name: CrumpledPaper
-  m_TagString: Untagged
+  m_TagString: Good
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,8 +100,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionStrength: 3
-  flickStrength: 1
-  minDistanceToHold: 3
+  flickStrength: 30
+  minDistanceToHold: 1
+  holdFlickStrength: 5
+  holdable: 0
 --- !u!50 &1323738921826948616
 Rigidbody2D:
   serializedVersion: 4
@@ -147,13 +149,13 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1323738921826948617}
   serializedVersion: 6
-  lengthInSec: 5
+  lengthInSec: 0.05
   simulationSpeed: 5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0

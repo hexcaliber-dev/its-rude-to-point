@@ -2,18 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// DOES NOT INHERIT MINIGAMETRACKER because it is completely separate!
-public class CountUpMiniGame : MonoBehaviour
+public class TurnOnScript : MonoBehaviour
 {
     // Start is called before the first frame update
+    private AudioSource aSource;
     void Start()
     {
-        
+        aSource = GetComponent<AudioSource> ();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void OnCollisionEnter2D (Collision2D collision) 
+    {
+        aSource.Play();
     }
 }

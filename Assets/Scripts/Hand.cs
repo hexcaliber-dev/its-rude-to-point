@@ -62,7 +62,7 @@ public class Hand : MonoBehaviour {
             if (currState == FingerState.Clenched && !animator.GetBool ("isFlicked")) {
                 animator.SetBool ("isFlicked", true);
                 if (currObj != null) {
-                    currObj.Flick (currObj.transform.position - FingerTip.transform.position);
+                    currObj.Flick (new Vector2 (-Mathf.Cos (transform.eulerAngles.z * Mathf.Deg2Rad), -Mathf.Sin (transform.eulerAngles.z * Mathf.Deg2Rad)));
                     currObj.LetGo ();
                 }
             } else

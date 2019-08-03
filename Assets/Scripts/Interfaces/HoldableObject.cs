@@ -21,20 +21,21 @@ public class HoldableObject : MonoBehaviour {
 
     /// Strength when moving from held to flicked. Should be less than flickStrength
     public float holdFlickStrength = 5f;
+    public bool holdable;
 
     // Start is called before the first frame update
     virtual protected void Start () {
         audioSrc = GetComponent<AudioSource> ();
-        particleSrc = GetComponent<ParticleSystem> ();
+        //particleSrc = GetComponent<ParticleSystem> ();
         rb2d = GetComponent<Rigidbody2D> ();
-        particleSrc.Stop ();
+        //particleSrc.Stop ();
 
         heldObjPos = GameObject.Find ("Held Object Position").transform;
     }
 
     // Update is called once per frame
     virtual protected void Update () {
-        if (isHeld) {
+        if (isHeld && holdable) {
             transform.position = heldObjPos.position;
             rb2d.velocity = Vector2.zero;
         }
@@ -54,6 +55,9 @@ public class HoldableObject : MonoBehaviour {
 
     /// Override this method to set custom flick behavior
     virtual public void Flick (Vector2 direction) {
+
+        print("FLICK");
+        
         if (isHeld) {
             rb2d.AddForce (direction * holdFlickStrength, ForceMode2D.Impulse);
         } else {
