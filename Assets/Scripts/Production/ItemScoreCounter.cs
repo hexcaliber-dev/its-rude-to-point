@@ -4,27 +4,15 @@ using UnityEngine;
 
 public class ItemScoreCounter : MonoBehaviour
 {
-    public static int mistakes;
     public string counting;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-         mistakes = 0;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void OnCollisionEnter2D (Collision2D collision)
     {
         if(collision.gameObject.tag == counting)
         {
-            mistakes++;
-            Debug.Log(mistakes);
+            StartCoroutine(GameObject.Find("Main Camera").GetComponent<CameraShake>().Shake(.15f, .4f));
+            (GameObject.FindObjectOfType(typeof(CountDownMiniGame)) as CountDownMiniGame).DeductPoint();
         }
         Destroy(collision.gameObject);
     }

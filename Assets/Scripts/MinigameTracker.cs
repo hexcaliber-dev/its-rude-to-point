@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MinigameTracker : MonoBehaviour {
-    public static Color ACHIEVED_COLOR = new Color (0, 237, 91);
+    public static Color ACHIEVED_COLOR = new Color32 (42, 245, 20, 255);
+    public static Color DENIED_COLOR = new Color32 (245, 50, 20, 255);
     public static int lastGamePlayed = -1;
-    public enum MinigameList { SaveTheWorld, PaperBasketBall }
+    public enum MinigameList { SaveTheWorld, PaperBasketBall, GearProduction, Juggling, CogSort }
     public static int lives = 5;
     public static int points = 0;
 
@@ -15,7 +16,7 @@ public class MinigameTracker : MonoBehaviour {
 
     private const int GAME_OVER_SCENE = 1;
 
-    private const string LOSS_TEXT = "-1 Life. Rip";
+    private const string LOSS_TEXT = "Was that a misclick?";
     private const string WIN_TEXT = "Finger-clicking good!";
 
     public Transform loseScreen;
@@ -24,6 +25,10 @@ public class MinigameTracker : MonoBehaviour {
     public Image livesLeftImage, checkImage, xImage;
 
     public Sprite[] livesLeftSprites;
+
+    public Sprite victoryBG, defeatBG;
+
+    public bool isTutorial = false;
 
     void Start () {
         bestScoreText.text = "" + bestScore;
@@ -42,12 +47,13 @@ public class MinigameTracker : MonoBehaviour {
         int x = lastGamePlayed;
         while (x == lastGamePlayed)
             x = Random.Range (0, MinigameList.GetNames (typeof (MinigameList)).Length);
-        SceneManager.LoadScene (x + 1);
+        SceneManager.LoadScene (x + 2);
     }
 
     public void LoseLife () {
         lives--;
         splashText.text = LOSS_TEXT;
+        loseScreen.GetComponent<Image> ().sprite = defeatBG;
         StartCoroutine (ShowOverlay (xImage));
     }
 
@@ -55,6 +61,7 @@ public class MinigameTracker : MonoBehaviour {
         splashText.text = WIN_TEXT;
         points += pts;
         scoreText.text = "" + points;
+        loseScreen.GetComponent<Image> ().sprite = victoryBG;
         StartCoroutine (ShowOverlay (checkImage));
     }
 
@@ -79,7 +86,7 @@ public class MinigameTracker : MonoBehaviour {
                 yield return new WaitForSeconds (1f / 60);
             }
 
-            yield return new WaitForSeconds (5);
+            yield return new WaitForSeconds (3);
             SwitchMiniGame ();
             loseScreen.gameObject.SetActive (false);
         }
@@ -111,7 +118,10 @@ public class MinigameTracker : MonoBehaviour {
             frame++;
             yield return new WaitForSeconds (1f / 60);
         }
-        yield return new WaitForSeconds (5);
-        instructionText.gameObject.SetActive (false);
+
+        if(!isTutorial) {
+            yield return new WaitForSeconds (5);
+            instructionText.gameObject.SetActive (false);
+        }
     }
 }

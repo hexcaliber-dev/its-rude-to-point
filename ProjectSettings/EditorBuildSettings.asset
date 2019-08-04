@@ -5,13 +5,28 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/FingerPolish.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 9c1d8209da7fbd7448a33d85918811b5
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: 3db2f9b1e3c171dd2b6a43555e74c819
   - enabled: 1
     path: Assets/Scenes/PaperBasketball.unity
     guid: ddcb70e75db04004fa243e2f7fe2d047
   - enabled: 1
     path: Assets/Scenes/SaveTheWorld.unity
     guid: 502d9afec0259d54795c7c3848db81bc
+  - enabled: 1
+    path: Assets/Scenes/ProductionLine.unity
+    guid: 891288f89bbe0a147b2e5167a68745f9
+  - enabled: 1
+    path: Assets/Scenes/JugglingGame.unity
+    guid: b43678b654a6bf94d8e434f0f140bef2
+  - enabled: 1
+    path: Assets/Scenes/CogSort.unity
+    guid: d8289d2a33a94d916be952674ab357bd
+  - enabled: 0
+    path: Assets/Scenes/FingerPolish.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}

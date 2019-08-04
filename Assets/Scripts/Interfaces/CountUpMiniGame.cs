@@ -6,33 +6,41 @@ using UnityEngine.UI;
 
 // DOES NOT INHERIT MINIGAMETRACKER because it is completely separate!
 public class CountUpMiniGame : MonoBehaviour {
-    MinigameTracker tracker;
-    Text timer;
+    protected MinigameTracker tracker;
+    protected Text timer;
 
     Text oneText, twoText, threeText;
+    RawImage oneImg;
+    Image twoImg, threeImg;
+
+    protected bool hasLost;
 
     /// Number of seconds required to achieve each of these point values
     public int onePt, twoPt, threePt;
     /// Set a unique consecutive numerical ID for this minigame!
     public int gameID;
-    int currPoints;
+    protected int currPoints;
 
-    float timeElapsed;
+    protected float timeElapsed;
 
     // Start is called before the first frame update
-    void Start () {
+    virtual protected void Start () {
         tracker = GameObject.FindObjectOfType (typeof (MinigameTracker)) as MinigameTracker;
         timer = GameObject.Find ("Timer").GetComponent<Text> ();
         oneText = GameObject.Find ("1Text").GetComponent<Text> ();
         twoText = GameObject.Find ("2Text").GetComponent<Text> ();
         threeText = GameObject.Find ("3Text").GetComponent<Text> ();
+        oneImg = GameObject.Find ("1Img").GetComponent<RawImage> ();
+        twoImg = GameObject.Find ("2Img").GetComponent<Image> ();
+        threeImg = GameObject.Find ("3Img").GetComponent<Image> ();
 
         currPoints = 0;
         timeElapsed = 0;
+        hasLost = false;
     }
 
     // Update is called once per frame
-    void Update () {
+    virtual protected void Update () {
         // Timer
         timeElapsed += Time.deltaTime;
 
@@ -43,13 +51,17 @@ public class CountUpMiniGame : MonoBehaviour {
         // Update visuals and points
         if (currPoints < 1 && timeElapsed > onePt) {
             oneText.color = MinigameTracker.ACHIEVED_COLOR;
+            oneImg.color = MinigameTracker.ACHIEVED_COLOR;
             currPoints++;
         } else if (currPoints < 2 && timeElapsed > twoPt) {
             twoText.color = MinigameTracker.ACHIEVED_COLOR;
+            twoImg.color = MinigameTracker.ACHIEVED_COLOR;
             currPoints++;
         } else if (currPoints < 3 && timeElapsed > threePt) {
             threeText.color = MinigameTracker.ACHIEVED_COLOR;
+            threeImg.color = MinigameTracker.ACHIEVED_COLOR;
             currPoints++;
+            Lose(); // No point in keeping on going after getting 3 pts!
         }
 
         // Check for loss
@@ -65,11 +77,14 @@ public class CountUpMiniGame : MonoBehaviour {
 
     /// Called either when LoseCondition() returns true OR if manually called by an external script.
     virtual public void Lose () {
-        MinigameTracker.lastGamePlayed = gameID;
-        if (currPoints < 1)
-            tracker.LoseLife ();
-        else
-            tracker.addPoints (currPoints);
-        StartCoroutine (tracker.ShowLoseScreen ());
+        if(!hasLost) {
+            hasLost = true;
+            MinigameTracker.lastGamePlayed = gameID;
+            if (currPoints < 1)
+                tracker.LoseLife ();
+            else
+                tracker.addPoints (currPoints);
+            StartCoroutine (tracker.ShowLoseScreen ());
+        }
     }
 }

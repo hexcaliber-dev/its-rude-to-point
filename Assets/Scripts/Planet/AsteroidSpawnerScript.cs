@@ -8,7 +8,7 @@ public class AsteroidSpawnerScript : MonoBehaviour
     public float nextActionTime;
 
     // Period does not reset on next round!
-    public static float period = 1f;
+    public static float period = 0.5f;
 
     /// How much to subtract from the period every asteroid spawn
     public float periodSubtracter = 0.01f;
@@ -16,11 +16,14 @@ public class AsteroidSpawnerScript : MonoBehaviour
     /// How much to add to the period on new round
     public float periodAdder = 0.2f;
 
+    float timeElapsed;
+
     //private Rigidbody rigidbody;
 
     // Start is called before the first frame update
     void Start()
     {
+        timeElapsed = 0f;
         period += periodAdder;
     }
 
@@ -32,7 +35,8 @@ public class AsteroidSpawnerScript : MonoBehaviour
 
 
     void Update () {
-        if (Time.time > nextActionTime ) {
+        timeElapsed += Time.deltaTime;
+        if (timeElapsed > nextActionTime ) {
             nextActionTime += period;
 
             if(period > 0.02)

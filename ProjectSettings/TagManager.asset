@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Asteroid
   - Good
+  - Switch
+  - RedCog
+  - GreenCog
+  - BlueCog
   layers:
   - Default
   - TransparentFX

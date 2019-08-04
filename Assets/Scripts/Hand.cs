@@ -59,24 +59,26 @@ public class Hand : MonoBehaviour {
 
         // Stretch or flick
         if (Input.GetKeyDown (KeyCode.Mouse1)) {
-            if (currState == FingerState.Clenched && !animator.GetBool ("isFlicked")) {
+            if (!animator.GetBool ("isFlicked")) {
+                animator.SetBool ("isClenched", true);
                 animator.SetBool ("isFlicked", true);
+                GetComponent<ParticleSystem>().Play();
+                    Debug.Log("wtf");
                 if (currObj != null) {
                     currObj.Flick (new Vector2 (-Mathf.Cos (transform.eulerAngles.z * Mathf.Deg2Rad), -Mathf.Sin (transform.eulerAngles.z * Mathf.Deg2Rad)));
                     currObj.LetGo ();
                 }
-            } else
-                animator.SetBool ("isExtended", true);
+
+                StartCoroutine (DelayUnclench ());
+
+            }
         }
         if (Input.GetKeyUp (KeyCode.Mouse1)) {
-            animator.SetBool ("isExtended", false);
             animator.SetBool ("isFlicked", false);
         }
 
         if (animator.GetBool ("isClenched"))
             currState = FingerState.Clenched;
-        if (animator.GetBool ("isExtended"))
-            currState = FingerState.Extended;
         if (animator.GetBool ("isFlicked"))
             currState = FingerState.Flicked;
 
@@ -95,5 +97,10 @@ public class Hand : MonoBehaviour {
             }
         }
         return currBestObj;
+    }
+
+    IEnumerator DelayUnclench () {
+        yield return new WaitForSeconds(0.25f);
+        animator.SetBool ("isClenched", false);
     }
 }

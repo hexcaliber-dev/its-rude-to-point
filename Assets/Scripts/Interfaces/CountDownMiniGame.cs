@@ -11,13 +11,23 @@ public class CountDownMiniGame : MonoBehaviour {
 
     Text oneText, twoText, threeText;
 
-    /// Number of seconds required to achieve each of these point values
+    /// Number of seconds required to achieve each of these point values. onePt should be the least, threePt the greatest.
     public int onePt, twoPt, threePt;
+    RawImage oneImg;
+    Image twoImg, threeImg;
     /// Set a unique consecutive numerical ID for this minigame!
     public int gameID;
-    int currPoints;
+    protected int currPoints;
 
-    float timeElapsed;
+    protected float timeRemaining;
+
+    public bool hasLost;
+
+    /// Starting time, in seconds. Game will end when the time is up! 
+    public float startingTime = 10f;
+
+    /// Set to true if points should be automatically deducted when a certain time is reached.
+    public bool timeBasedPoints = false;
 
     // Start is called before the first frame update
     void Start () {
@@ -26,30 +36,40 @@ public class CountDownMiniGame : MonoBehaviour {
         oneText = GameObject.Find ("1Text").GetComponent<Text> ();
         twoText = GameObject.Find ("2Text").GetComponent<Text> ();
         threeText = GameObject.Find ("3Text").GetComponent<Text> ();
+        oneImg = GameObject.Find ("1Img").GetComponent<RawImage> ();
+        twoImg = GameObject.Find ("2Img").GetComponent<Image> ();
+        threeImg = GameObject.Find ("3Img").GetComponent<Image> ();
 
-        currPoints = 0;
-        timeElapsed = 0;
+        currPoints = 3;
+        timeRemaining = startingTime;
+        hasLost = false;
     }
 
     // Update is called once per frame
     void Update () {
         // Timer
-        timeElapsed += Time.deltaTime;
+        
+        timeRemaining -= Time.deltaTime;
 
-        string minutes = Mathf.Floor (timeElapsed / 60).ToString ("00");
-        string seconds = (timeElapsed % 60).ToString ("00");
+        string minutes = Mathf.Floor (timeRemaining / 60).ToString ("00");
+        string seconds = (timeRemaining % 60).ToString ("00");
         timer.text = "" + minutes + ":" + seconds;
 
-        // Update visuals and points
-        if (currPoints < 1 && timeElapsed > onePt) {
-            oneText.color = MinigameTracker.ACHIEVED_COLOR;
-            currPoints++;
-        } else if (currPoints < 2 && timeElapsed > twoPt) {
-            twoText.color = MinigameTracker.ACHIEVED_COLOR;
-            currPoints++;
-        } else if (currPoints < 3 && timeElapsed > threePt) {
-            threeText.color = MinigameTracker.ACHIEVED_COLOR;
-            currPoints++;
+        if (timeBasedPoints) {
+            // Update visuals and points
+            if (currPoints > 2 && timeRemaining < threePt) {
+                threeText.color = MinigameTracker.DENIED_COLOR;
+                threeImg.color = MinigameTracker.DENIED_COLOR;
+                currPoints--;
+            } else if (currPoints > 1 && timeRemaining < twoPt) {
+                twoText.color = MinigameTracker.DENIED_COLOR;
+                twoImg.color = MinigameTracker.DENIED_COLOR;
+                currPoints--;
+            } else if (currPoints > 0 && timeRemaining < onePt) {
+                oneText.color = MinigameTracker.DENIED_COLOR;
+                oneImg.color = MinigameTracker.DENIED_COLOR;
+                currPoints--;
+            }
         }
 
         // Check for loss
@@ -58,18 +78,37 @@ public class CountDownMiniGame : MonoBehaviour {
         }
     }
 
-    /// Specify how to check for loss.
+    /// Specify how to check for loss. Default: lose when time runs out.
     virtual protected bool LoseCondition () {
-        return false;
+        return timeRemaining <= 0 || currPoints <= 0;
+    }
+
+    virtual public void DeductPoint () {
+        currPoints--;
+        if (currPoints == 2) {
+            threeText.color = MinigameTracker.DENIED_COLOR;
+            threeImg.color = MinigameTracker.DENIED_COLOR;
+        }
+        else if (currPoints == 1) {
+            twoText.color = MinigameTracker.DENIED_COLOR;
+            twoImg.color = MinigameTracker.DENIED_COLOR;
+        }
+        else if (currPoints == 0) {
+            oneText.color = MinigameTracker.DENIED_COLOR;
+            oneImg.color = MinigameTracker.DENIED_COLOR;
+        }
     }
 
     /// Called either when LoseCondition() returns true OR if manually called by an external script.
     virtual public void Lose () {
-        MinigameTracker.lastGamePlayed = gameID;
-        if (currPoints < 1)
-            tracker.LoseLife ();
-        else
-            tracker.addPoints (currPoints);
-        StartCoroutine (tracker.ShowLoseScreen ());
+        if (!hasLost) {
+            hasLost = true;
+            MinigameTracker.lastGamePlayed = gameID;
+            if (currPoints < 1)
+                tracker.LoseLife ();
+            else
+                tracker.addPoints (currPoints);
+            StartCoroutine (tracker.ShowLoseScreen ());
+        }
     }
 }
