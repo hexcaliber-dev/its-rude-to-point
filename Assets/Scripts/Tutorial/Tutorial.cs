@@ -38,8 +38,8 @@ public class Tutorial : CountUpMiniGame {
     }
 
     public override void Lose () {
-        print ("LOSE");
         if (!hasLost) {
+            MinigameTracker.tutorialPlayed = true;
             hasLost = true;
             MinigameTracker.lastGamePlayed = gameID;
             tracker.addPoints (0);

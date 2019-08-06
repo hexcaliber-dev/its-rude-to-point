@@ -7,8 +7,9 @@ public class AsteroidSpawnerScript : MonoBehaviour
     public GameObject prefab;
     public float nextActionTime;
 
-    // Period does not reset on next round!
-    public static float period = 0.5f;
+    public float period = 1f;
+
+    float minPeriod = 0.3f;
 
     /// How much to subtract from the period every asteroid spawn
     public float periodSubtracter = 0.01f;
@@ -24,7 +25,23 @@ public class AsteroidSpawnerScript : MonoBehaviour
     void Start()
     {
         timeElapsed = 0f;
-        period += periodAdder;
+
+        if(MinigameTracker.numPlayed > 3) {
+            period = 0.8f;
+            minPeriod = 0.2f;
+        }
+        else if(MinigameTracker.numPlayed > 5) {
+            period = 0.7f;
+            minPeriod = 0.1f;
+        }
+        else if(MinigameTracker.numPlayed > 8) {
+            period = 0.5f;
+            minPeriod = 0.1f;
+        }
+        else if(MinigameTracker.numPlayed > 11) {
+            period = 0.3f;
+            minPeriod = 0.1f;
+        }
     }
 
     // Update is called once per frame
@@ -39,7 +56,7 @@ public class AsteroidSpawnerScript : MonoBehaviour
         if (timeElapsed > nextActionTime ) {
             nextActionTime += period;
 
-            if(period > 0.02)
+            if(period > minPeriod)
                 period -= periodSubtracter;
 
             Vector3 position = new Vector3(Random.Range(-10.0f, 10.0f), 7.5f, 0);

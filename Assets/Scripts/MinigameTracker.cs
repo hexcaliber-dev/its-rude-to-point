@@ -14,12 +14,16 @@ public class MinigameTracker : MonoBehaviour {
 
     public static int bestScore = 0;
 
-    private const int GAME_OVER_SCENE = 1;
+    public static bool tutorialPlayed = false;
+
+    private const int GAME_OVER_SCENE = 2;
 
     private const string LOSS_TEXT = "Was that a misclick?";
     private const string WIN_TEXT = "Finger-clicking good!";
 
     public Transform loseScreen;
+
+    public static int numPlayed = 0;
 
     public Text livesLeft, splashText, scoreText, bestScoreText, instructionText;
     public Image livesLeftImage, checkImage, xImage;
@@ -29,6 +33,10 @@ public class MinigameTracker : MonoBehaviour {
     public Sprite victoryBG, defeatBG;
 
     public bool isTutorial = false;
+    public AudioClip clip1;
+    public AudioClip clip2;
+    public AudioClip clip3;
+    public AudioClip loseclip;
 
     void Start () {
         bestScoreText.text = "" + bestScore;
@@ -44,22 +52,38 @@ public class MinigameTracker : MonoBehaviour {
     }
 
     public void SwitchMiniGame () {
+        numPlayed++;
         int x = lastGamePlayed;
         while (x == lastGamePlayed)
             x = Random.Range (0, MinigameList.GetNames (typeof (MinigameList)).Length);
-        SceneManager.LoadScene (x + 2);
+        SceneManager.LoadScene (x + 3);
     }
 
     public void LoseLife () {
         lives--;
         splashText.text = LOSS_TEXT;
         loseScreen.GetComponent<Image> ().sprite = defeatBG;
+        scoreText.text = "" + points;
+        GetComponent<AudioSource> ().clip = loseclip;
+        GetComponent<AudioSource> ().Play ();
         StartCoroutine (ShowOverlay (xImage));
     }
 
     public void addPoints (int pts) {
         splashText.text = WIN_TEXT;
         points += pts;
+        if (pts == 1) {
+            GetComponent<AudioSource> ().clip = clip1;
+            GetComponent<AudioSource> ().Play ();
+        }
+        if (pts == 2) {
+            GetComponent<AudioSource> ().clip = clip2;
+            GetComponent<AudioSource> ().Play ();
+        }
+        if (pts == 3) {
+            GetComponent<AudioSource> ().clip = clip3;
+            GetComponent<AudioSource> ().Play ();
+        }
         scoreText.text = "" + points;
         loseScreen.GetComponent<Image> ().sprite = victoryBG;
         StartCoroutine (ShowOverlay (checkImage));
@@ -75,11 +99,9 @@ public class MinigameTracker : MonoBehaviour {
 
             loseScreen.gameObject.SetActive (true);
             loseScreen.localScale = new Vector3 (0, 0, 1);
-            loseScreen.Translate (-5f, 0, 0);
 
             int frame = 0;
             while (frame < 30) {
-                loseScreen.Translate (5f / 30, 0, 0);
                 loseScreen.Rotate (new Vector3 (0, 0, 360f / 30));
                 loseScreen.localScale += new Vector3 (1f / 30, 1f / 30, 0);
                 frame++;
@@ -119,7 +141,7 @@ public class MinigameTracker : MonoBehaviour {
             yield return new WaitForSeconds (1f / 60);
         }
 
-        if(!isTutorial) {
+        if (!isTutorial) {
             yield return new WaitForSeconds (5);
             instructionText.gameObject.SetActive (false);
         }

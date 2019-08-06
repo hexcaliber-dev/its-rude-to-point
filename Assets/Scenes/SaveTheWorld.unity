@@ -1934,6 +1934,14 @@ PrefabInstance:
       propertyPath: gameID
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1253905954, guid: 49ffc71cfe4841b8da406c2c25b60140, type: 3}
+      propertyPath: threePt
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1253905954, guid: 49ffc71cfe4841b8da406c2c25b60140, type: 3}
+      propertyPath: twoPt
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49ffc71cfe4841b8da406c2c25b60140, type: 3}
 --- !u!4 &1416611282 stripped
@@ -2277,12 +2285,12 @@ PrefabInstance:
     - target: {fileID: 1323738921826948614, guid: e7c8201ccc85d614cb2c45425e2d96a3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.54
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 1323738921826948614, guid: e7c8201ccc85d614cb2c45425e2d96a3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.63
+      value: -3.46
       objectReference: {fileID: 0}
     - target: {fileID: 1323738921826948614, guid: e7c8201ccc85d614cb2c45425e2d96a3,
         type: 3}
@@ -2375,7 +2383,13 @@ PrefabInstance:
       propertyPath: m_MinVertexDistance
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1323738921826948609, guid: e7c8201ccc85d614cb2c45425e2d96a3,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d863fa50b7f24324aacc5927e26412e5, type: 3}
+    m_RemovedComponents:
+    - {fileID: 8944347472456792883, guid: e7c8201ccc85d614cb2c45425e2d96a3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e7c8201ccc85d614cb2c45425e2d96a3, type: 3}
 --- !u!1 &1897126887
 GameObject:
@@ -2566,7 +2580,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionStrength: 3
   flickStrength: 10
-  minDistanceToHold: -1
+  minDistanceToHold: 2
   holdFlickStrength: 10
   holdable: 0
   health: 0

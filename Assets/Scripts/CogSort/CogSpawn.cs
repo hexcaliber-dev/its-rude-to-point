@@ -7,12 +7,25 @@ public class CogSpawn : MonoBehaviour {
     public float speed;
     public GameObject redCog, greenCog, blueCog;
     public float nextActionTime;
-    public float period = 1f;
+    public float period = 2f;
 
     float timeElapsed;
     // Start is called before the first frame update
     void Start () {
         timeElapsed = 0f;
+
+        if(MinigameTracker.numPlayed > 3) {
+            period = 1.5f;
+        }
+        if(MinigameTracker.numPlayed > 6) {
+            period = 1f;
+        }
+        if(MinigameTracker.numPlayed > 9) {
+            period = 0.75f;
+        }
+        if(MinigameTracker.numPlayed > 12) {
+            period = 0.5f;
+        }
     }
 
     // Update is called once per frame

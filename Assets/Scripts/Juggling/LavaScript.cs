@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LavaScript : MonoBehaviour
-{
+public class LavaScript : MonoBehaviour {
     // Start is called before the first frame update
-    void Start()
-    {
-    }
+    void Start () { }
 
     // Update is called once per frame
-    void Update()
-    {
-        
+    void Update () {
+
     }
 
-    void OnCollisionEnter2D (Collision2D col)
-    {
-        StartCoroutine(GameObject.Find("Main Camera").GetComponent<CameraShake>().Shake(.15f, .4f));
-        GameObject.Find("CountDownMinigame").GetComponent<CountDownMiniGame>().DeductPoint();
-        Destroy(col.gameObject);
+    void OnCollisionEnter2D (Collision2D col) {
+        StartCoroutine (GameObject.Find ("Main Camera").GetComponent<CameraShake> ().Shake (.15f, .4f));
+
+        GameObject.Find ("Spawner").GetComponent<BallSpawner> ().numBalls--;
+
+        if (GameObject.Find ("Spawner").GetComponent<BallSpawner> ().numBalls <= 2)
+            GameObject.Find ("CountDownMinigame").GetComponent<CountDownMiniGame> ().DeductPoint ();
+
+        Destroy (col.gameObject);
     }
 }

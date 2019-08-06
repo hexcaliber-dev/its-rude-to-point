@@ -8,12 +8,25 @@ public class ItemSpawnerScript : MonoBehaviour {
     public GameObject goodItem;
     public GameObject badItem;
     public float nextActionTime;
-    public float period;
+    public float period = 1f;
 
     float timeElapsed;
     // Start is called before the first frame update
     void Start () {
         timeElapsed = 0f;
+
+        if (MinigameTracker.numPlayed > 3) {
+            period = 0.8f;
+        }
+        if (MinigameTracker.numPlayed > 6) {
+            period = 0.6f;
+        }
+        if (MinigameTracker.numPlayed > 9) {
+            period = 0.5f;
+        }
+        if (MinigameTracker.numPlayed > 12) {
+            period = 0.4f;
+        }
     }
 
     // Update is called once per frame

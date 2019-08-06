@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Tutorial.unity
     guid: 3db2f9b1e3c171dd2b6a43555e74c819
   - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 498dbae23b2c0b14c90607baf77a7d03
+  - enabled: 1
     path: Assets/Scenes/PaperBasketball.unity
     guid: ddcb70e75db04004fa243e2f7fe2d047
   - enabled: 1

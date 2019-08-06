@@ -48,7 +48,7 @@ public class CountDownMiniGame : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         // Timer
-        
+
         timeRemaining -= Time.deltaTime;
 
         string minutes = Mathf.Floor (timeRemaining / 60).ToString ("00");
@@ -88,12 +88,10 @@ public class CountDownMiniGame : MonoBehaviour {
         if (currPoints == 2) {
             threeText.color = MinigameTracker.DENIED_COLOR;
             threeImg.color = MinigameTracker.DENIED_COLOR;
-        }
-        else if (currPoints == 1) {
+        } else if (currPoints == 1) {
             twoText.color = MinigameTracker.DENIED_COLOR;
             twoImg.color = MinigameTracker.DENIED_COLOR;
-        }
-        else if (currPoints == 0) {
+        } else if (currPoints == 0) {
             oneText.color = MinigameTracker.DENIED_COLOR;
             oneImg.color = MinigameTracker.DENIED_COLOR;
         }
@@ -102,12 +100,18 @@ public class CountDownMiniGame : MonoBehaviour {
     /// Called either when LoseCondition() returns true OR if manually called by an external script.
     virtual public void Lose () {
         if (!hasLost) {
+
+            GetComponent<AudioSource> ().Stop (); 
+
             hasLost = true;
             MinigameTracker.lastGamePlayed = gameID;
+            print (currPoints);
             if (currPoints < 1)
                 tracker.LoseLife ();
-            else
+            else {
                 tracker.addPoints (currPoints);
+            }
+
             StartCoroutine (tracker.ShowLoseScreen ());
         }
     }

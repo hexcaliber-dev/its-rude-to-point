@@ -79,6 +79,7 @@ public class CountUpMiniGame : MonoBehaviour {
     virtual public void Lose () {
         if(!hasLost) {
             hasLost = true;
+            GetComponent<AudioSource>().Stop();
             MinigameTracker.lastGamePlayed = gameID;
             if (currPoints < 1)
                 tracker.LoseLife ();
